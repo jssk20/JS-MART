@@ -1601,6 +1601,60 @@
             }
         };
 
+        // Add to cart (requires signed in user)
+const user = firebaseAuth.currentUser;
+await addToCart(user.uid, 'product_id', 2);
+
+// Get user cart
+const cart = await getUserCart(user.uid);
+console.log(cart);
+
+// Add a product
+await addProduct({
+  name: "Nike Air Max",
+  price: 129.99,
+  category: "Footwear",
+  brand: "Nike",
+  imageUrl: "https://example.com/image.jpg"
+});
+
+// Get all products
+const products = await getProducts();
+console.log(products);
+
+// Create an order
+const orderData = {
+  userId: user.uid,
+  userEmail: user.email,
+  items: [{
+    product: "Nike Air Max 270",
+    price: "$129.99",
+    size: "9",
+    color: "Black",
+    quantity: 2
+  }],
+  totalAmount: 259.98
+};
+await createOrder(orderData);
+
+// Get user's orders
+const orders = await getUserOrders(user.uid);
+console.log(orders);
+
+// Get specific order
+const order = await getOrderById('order_id');
+console.log(order);
+
+// Update order status
+await updateOrderStatus('order_id', 'processing');
+
+// Cancel order
+await cancelOrder('order_id');
+
+// Get all orders (admin)
+const allOrders = await getAllOrders();
+console.log(allOrders);
+
         window.createOrder = async (orderData) => {
             try {
                 const docRef = await addDoc(collection(db, 'orders'), {
